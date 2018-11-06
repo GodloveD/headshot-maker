@@ -1,0 +1,32 @@
+Bootstrap: library
+From: ubuntu:18.04
+
+%files
+    headshots /tmp
+    template.mat /tmp
+    imrecolor.m /tmp
+    imrecolorAll.m /tmp
+
+%post
+    mv /tmp/headshots /
+    apt-get update && apt-get -y install octave less libcanberra-gtk3-module \
+        octave-image
+    mkdir /octave
+    cd /octave
+    mv /tmp/template.mat .
+    mv /tmp/imrecolor.m .
+    mv /tmp/imrecolorAll.m .
+
+%environment
+    export LC_ALL=C
+
+%runscript
+    /octave/imrecolorAll.m "$@"
+
+%help
+    1. Crop your image to 485x651 (or similar ratio)
+    2. run `./headshot-maker headshot.jpg`
+    3. look in the `./output` directory and select your favorite image
+
+%labels
+    Author d@sylabs.io
